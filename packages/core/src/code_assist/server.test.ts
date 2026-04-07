@@ -704,7 +704,7 @@ describe('CodeAssistServer', () => {
     expect(response).toEqual(mockResponse);
   });
 
-  it('should call getCodeAssistGlobalUserSetting endpoint', async () => {
+  it('should call getCodeAssistGlobalUserSetting endpoint with cloudaicompanionProject param', async () => {
     const { server } = createTestServer();
     const mockResponse: CodeAssistGlobalUserSettingResponse = {
       freeTierDataCollectionOptin: true,
@@ -717,6 +717,35 @@ describe('CodeAssistServer', () => {
 
     expect(requestGetSpy).toHaveBeenCalledWith(
       'getCodeAssistGlobalUserSetting',
+      undefined,
+      { cloudaicompanionProject: 'test-project' },
+    );
+    expect(response).toEqual(mockResponse);
+  });
+
+  it('should call getCodeAssistGlobalUserSetting endpoint without param when projectId is missing', async () => {
+    const mockRequest = vi.fn();
+    const client = { request: mockRequest } as unknown as OAuth2Client;
+    const server = new CodeAssistServer(
+      client,
+      undefined,
+      {},
+      undefined,
+      UserTierId.FREE,
+    );
+    const mockResponse: CodeAssistGlobalUserSettingResponse = {
+      freeTierDataCollectionOptin: true,
+    };
+    const requestGetSpy = vi
+      .spyOn(server, 'requestGet')
+      .mockResolvedValue(mockResponse);
+
+    const response = await server.getCodeAssistGlobalUserSetting();
+
+    expect(requestGetSpy).toHaveBeenCalledWith(
+      'getCodeAssistGlobalUserSetting',
+      undefined,
+      undefined,
     );
     expect(response).toEqual(mockResponse);
   });

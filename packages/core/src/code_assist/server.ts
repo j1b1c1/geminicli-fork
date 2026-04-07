@@ -308,8 +308,13 @@ export class CodeAssistServer implements ContentGenerator {
   }
 
   async getCodeAssistGlobalUserSetting(): Promise<CodeAssistGlobalUserSettingResponse> {
+    const params = this.projectId
+      ? { cloudaicompanionProject: this.projectId }
+      : undefined;
     return this.requestGet<CodeAssistGlobalUserSettingResponse>(
       'getCodeAssistGlobalUserSetting',
+      undefined,
+      params,
     );
   }
 
@@ -431,6 +436,7 @@ export class CodeAssistServer implements ContentGenerator {
   private async makeGetRequest<T>(
     url: string,
     signal?: AbortSignal,
+    params?: Record<string, string>,
   ): Promise<T> {
     const res = await this.client.request<T>({
       url,
@@ -441,12 +447,17 @@ export class CodeAssistServer implements ContentGenerator {
       },
       responseType: 'json',
       signal,
+      params,
     });
     return res.data;
   }
 
-  async requestGet<T>(method: string, signal?: AbortSignal): Promise<T> {
-    return this.makeGetRequest<T>(this.getMethodUrl(method), signal);
+  async requestGet<T>(
+    method: string,
+    signal?: AbortSignal,
+    params?: Record<string, string>,
+  ): Promise<T> {
+    return this.makeGetRequest<T>(this.getMethodUrl(method), signal, params);
   }
 
   async requestGetOperation<T>(name: string, signal?: AbortSignal): Promise<T> {
