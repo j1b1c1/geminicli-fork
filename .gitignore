@@ -60,6 +60,7 @@ gemini-debug.log
 
 .genkit
 .gemini-clipboard/
+.qwen/
 .eslintcache
 evals/logs/
 
