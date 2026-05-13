@@ -106,9 +106,6 @@ jobs:
       - name: 'Build Binary'
         run: 'npm run build:binary'
 
-      - name: 'Build Core Package'
-        run: 'npm run build -w @google/gemini-cli-core'
-
       - name: 'Verify Output Exists'
         run: |
           if [ -f "dist/${{ matrix.platform_name }}/gemini" ]; then
