@@ -1901,7 +1901,7 @@ describe('Server Config (config.ts)', () => {
     const originalImplementation = realpathMock.getMockImplementation();
 
     try {
-      realpathMock.mockImplementation((input) => {
+      realpathMock.mockImplementation(((input: fs.PathLike) => {
         const normalizedInput =
           typeof input === 'string' || Buffer.isBuffer(input)
             ? input
@@ -1915,21 +1915,23 @@ describe('Server Config (config.ts)', () => {
           throw error;
         }
         if (originalImplementation) {
-          return originalImplementation(input);
+          return (originalImplementation as any)(input);
         }
-        return normalizedInput;
-      });
+        return normalizedInput as any;
+      }) as any);
 
       expect(() => config.setSessionId('session-two')).not.toThrow();
     } finally {
-      realpathMock.mockImplementation((input) => {
+      realpathMock.mockImplementation(((input: fs.PathLike) => {
         if (originalImplementation) {
-          return originalImplementation(input);
+          return (originalImplementation as any)(input);
         }
-        return typeof input === 'string' || Buffer.isBuffer(input)
-          ? input
-          : input.toString();
-      });
+        const normalizedInput =
+          typeof input === 'string' || Buffer.isBuffer(input)
+            ? input
+            : input.toString();
+        return normalizedInput as any;
+      }) as any);
     }
   });
 

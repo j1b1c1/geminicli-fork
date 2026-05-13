@@ -1961,7 +1961,7 @@ describe('getRipgrepPath', () => {
       'should map $platform $arch to $expectedBin',
       async ({ platform, arch, expectedBin }) => {
         vi.spyOn(os, 'platform').mockReturnValue(platform as NodeJS.Platform);
-        vi.spyOn(os, 'arch').mockReturnValue(arch);
+        vi.spyOn(os, 'arch').mockReturnValue(arch as any);
         vi.mocked(fileExists).mockImplementation(async (checkPath) =>
           checkPath.endsWith(expectedBin),
         );
