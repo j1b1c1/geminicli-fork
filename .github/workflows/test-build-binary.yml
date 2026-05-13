@@ -21,15 +21,6 @@ jobs:
           - os: 'ubuntu-latest'
             platform_name: 'linux-x64'
             arch: 'x64'
-          - os: 'windows-latest'
-            platform_name: 'win32-x64'
-            arch: 'x64'
-          - os: 'macos-latest' # Apple Silicon (ARM64)
-            platform_name: 'darwin-arm64'
-            arch: 'arm64'
-          - os: 'macos-latest' # Intel (x64) running on ARM via Rosetta
-            platform_name: 'darwin-x64'
-            arch: 'x64'
 
     steps:
       - name: 'Checkout'
